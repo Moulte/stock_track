@@ -19,7 +19,11 @@ jobs:
       - run: flutter build web --no-tree-shake-icons
 
       - name: Create Frontend Directory
+        run: mkdir container
+        
+      - name: Create Frontend Directory
         run: mkdir container/build
+        
 
       - name: Create Frontend Directory
         run: cp -r build/web container/build
