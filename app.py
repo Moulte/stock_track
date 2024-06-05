@@ -1,9 +1,6 @@
-import asyncio
-import aiohttp
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
-import requests
 
 app = FastAPI()
 
