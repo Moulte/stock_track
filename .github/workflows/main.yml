@@ -28,6 +28,9 @@ jobs:
         run: cp app.py container
 
       - name: Create backend
+        run: cp requirements.txt container
+
+      - name: Create backend
         run: cp Dockerfile container
 
       - name: Display Backend Directory Contents
