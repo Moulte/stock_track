@@ -56,7 +56,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
             context: ./container
-            platforms: linux/arm64v8, linux/amd64
+            platforms: linux/arm64/v8, linux/amd64
             push: true
             tags: cmulteau/stock_trace:latest
             cache-from: type=gha
