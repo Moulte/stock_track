@@ -36,6 +36,9 @@ jobs:
         
       - name: Create backend
         run: cp log_conf.yaml container
+        
+      - name: Create backend
+        run: cp etoro_symbols.json container
 
       - name: Create backend
         run: cp Dockerfile container
