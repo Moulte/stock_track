@@ -33,6 +33,9 @@ jobs:
 
       - name: Create backend
         run: cp requirements.txt container
+        
+      - name: Create backend
+        run: cp log_conf.yaml container
 
       - name: Create backend
         run: cp Dockerfile container
