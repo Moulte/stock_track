@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Timer.periodic(const Duration(seconds: ref.read(settingsProvider).autoRefreshInSeconds), (timer) {
+    Timer.periodic(Duration(seconds: ref.read(settingsProvider).autoRefreshInSeconds), (timer) {
       ref.read(stockTrackerProvider.notifier).getStocks(ref.read(settingsProvider).stocks);
     });
     return MaterialApp(
