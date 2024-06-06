@@ -116,7 +116,7 @@ class StockDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 
   void sort<T>(Comparable<T> Function(Stock d) getField, bool ascending) {
-    stocks.sort((Stock a, Stock b) {
+    _stocks.sort((Stock a, Stock b) {
       if (!ascending) {
         final Stock c = a;
         a = b;
@@ -131,11 +131,11 @@ class StockDataSource extends DataTableSource {
   }
 
   void filter(String symbol) {
-    symbolFilter = symbol;
     if (symbol == symbolFilter) {
       return;
     }
     _stocks = stocks.where((element) => element.symbol.contains(symbol)).toList();
+    symbolFilter = symbol;
     notifyListeners();
   }
 }
@@ -150,6 +150,7 @@ class StockTable extends ConsumerStatefulWidget {
 class _AppNavigationRailState extends ConsumerState<StockTable> {
   int _sortColumnIndex = 0;
   bool _sortAscending = true;
+  final _focusNode = FocusNode();
   final TextEditingController search = TextEditingController();
   void _sort<T>(Comparable<T> Function(Stock d) getField, int columnIndex, bool ascending) {
     widget.data.sort<T>(getField, ascending);
@@ -162,6 +163,7 @@ class _AppNavigationRailState extends ConsumerState<StockTable> {
 
   void _filter(String filter) {
     widget.data.filter(filter);
+    _focusNode.unfocus();
     ref.read(filterProvider.notifier).update((state) => filter);
   }
 
@@ -175,6 +177,7 @@ class _AppNavigationRailState extends ConsumerState<StockTable> {
             children: [
               Expanded(
                 child: TextField(
+                  focusNode: _focusNode,
                   controller: search,
                   onEditingComplete: () => _filter(search.text),
                   onSubmitted: (value) => _filter(search.text),

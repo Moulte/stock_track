@@ -4,11 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stock_track/api.dart';
 import 'package:stock_track/model.dart';
+import 'package:stock_track/stocks.dart';
 
 class StockNotifier extends StateNotifier<AsyncValue<Map<String, Stock>>> {
   final Api api;
   final Ref ref;
-  StockNotifier(this.api, this.ref) : super(const AsyncLoading());
+  StockNotifier(this.api, this.ref) : super(const AsyncData({}));
 
   getStocks(List<String> stocksToWatch) async {
     List<Stock> stocks = [];
@@ -94,7 +95,7 @@ final settingsProvider = ChangeNotifierProvider<Settings>((ref) {
   return Settings(
     autoRefreshInSeconds: prefs.getInt("autoRefreshInSeconds") ?? 60,
     apiKey: prefs.getString("apiKey") ?? "",
-    stocks: prefs.getStringList("stocks") ?? [],
+    stocks: prefs.getStringList("stocks") ?? etoroStocks,
   );
 });
 

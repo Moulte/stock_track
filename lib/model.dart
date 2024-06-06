@@ -8,9 +8,9 @@ class Stock {
 
   Stock({required this.symbol, required this.openValue, required this.currentValue, required this.precedentValue});
 
-  num get prctSinceOpen =>  100*(currentValue-openValue)/currentValue;
+  num get prctSinceOpen =>  currentValue==0?0:100*(currentValue-openValue)/currentValue;
 
-  num get prctSinceLast =>  100*(currentValue-precedentValue)/currentValue;
+  num get prctSinceLast =>  currentValue==0?0:100*(currentValue-precedentValue)/currentValue;
 
   Stock copyWith({String? symbol, num? openValue, num? currentValue, num? precedentValue}) {
     return Stock(
