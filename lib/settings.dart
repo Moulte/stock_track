@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stock_track/state.dart';
 
 class SettingsView extends ConsumerStatefulWidget {
-  const SettingsView({super.key});
+  const SettingsView({this.onValidation, super.key});
+  final void Function()? onValidation;
 
   @override
   ConsumerState<SettingsView> createState() => _SettingsViewState();
@@ -110,6 +111,9 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
                             ref.read(prefsProvider).setString("apiKey", _apiKeyController.text);
                             ref.read(prefsProvider).setStringList("stocks", _stockController.text.isEmpty?[]:_stockController.text.split(","));
                             ref.read(prefsProvider).setInt("autoRefreshInSeconds", int.parse(_refreshController.text));
+                            if(widget.onValidation!=null){
+                              widget.onValidation!();
+                            }
                           },
                     icon: const Icon(Icons.check_circle),
                     label: const Text("Valider")),

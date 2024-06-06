@@ -7,6 +7,7 @@ import 'package:stock_track/model.dart';
 import 'package:stock_track/notif.dart';
 import 'package:stock_track/settings.dart';
 import 'package:stock_track/state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() async {
   final pref = await SharedPreferences.getInstance();
@@ -84,6 +85,12 @@ class StockDataSource extends DataTableSource {
     _stocks = stocks;
   }
 
+  Future<void> _launchUrl(String symbol) async {
+    if (!await launchUrl(Uri.parse("https://www.etoro.com/markets/$symbol"))) {
+      throw Exception('Could not launch "https://www.etoro.com/markets/$symbol"');
+    }
+  }
+
   Color getColor(num num) {
     if (num > 0) {
       return Colors.green;
@@ -98,7 +105,7 @@ class StockDataSource extends DataTableSource {
   DataRow? getRow(int index) {
     final stock = _stocks[index];
     return DataRow(cells: [
-      DataCell(SelectableText(stock.symbol)),
+      DataCell(SelectableText(stock.symbol), onDoubleTap: () async=> _launchUrl(stock.symbol)),
       DataCell(SelectableText(stock.openValue.toString())),
       DataCell(SelectableText(stock.currentValue.toString())),
       DataCell(SelectableText("${stock.prctSinceOpen.toStringAsFixed(2)}%", style: TextStyle(color: getColor(stock.prctSinceOpen)))),
@@ -189,7 +196,7 @@ class _AppNavigationRailState extends ConsumerState<StockTable> {
               IconButton(
                   onPressed: () => showDialog(
                         context: context,
-                        builder: (context) => const SettingsView(),
+                        builder: (context) =>  SettingsView(onValidation: () => Navigator.of(context).pop()),
                       ),
                   icon: const Icon(Icons.settings))
             ],
